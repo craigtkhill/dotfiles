@@ -1,0 +1,12 @@
+title = "gitleaks config for dotfiles"
+
+[[rules]]
+id = "personal-paths"
+description = "Personal filesystem paths"
+regex = '''(/Users/[^/\s"']+|/home/[^/\s"']+)'''
+tags = ["personal", "path"]
+
+[allowlist]
+description = "Allow config files and environment variables"
+paths = [".gitleaks.toml"]
+regexes = ['''\$HOME/[^/\s"']+''']
