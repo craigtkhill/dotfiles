@@ -6,6 +6,7 @@
 
 - link:
     ~/.config/fish: fish/
+    ~/.gitconfig: gitconfig
 
 - create:
     - ~/.config

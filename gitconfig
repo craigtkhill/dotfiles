@@ -1,0 +1,6 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Craig Hill
+	email = 64085763+craigtkhill@users.noreply.github.com
+[init]
+	defaultBranch = main

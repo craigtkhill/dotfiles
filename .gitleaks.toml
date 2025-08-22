@@ -6,7 +6,13 @@ description = "Personal filesystem paths"
 regex = '''(/Users/[^/\s"']+|/home/[^/\s"']+)'''
 tags = ["personal", "path"]
 
+[[rules]]
+id = "email-addresses"
+description = "Email addresses"
+regex = '''[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'''
+tags = ["email", "personal"]
+
 [allowlist]
-description = "Allow config files and environment variables"
+description = "Allow config files, environment variables, and noreply emails"
 paths = [".gitleaks.toml"]
-regexes = ['''\$HOME/[^/\s"']+''']
+regexes = ['''\$HOME/[^/\s"']+''', '''(?i)noreply@[a-zA-Z0-9.-]+''', '''(?i)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*noreply[a-zA-Z0-9.-]+''']
