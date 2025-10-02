@@ -1,3 +1,3 @@
 function lsa --description 'ls with all files, long format, human readable'
-    eza -laFh --git --all $argv
+    eza -lah --git --classify $argv
 end
