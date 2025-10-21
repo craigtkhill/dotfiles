@@ -2,9 +2,4 @@ README.md
 LICENSE.md
 .pre-commit-config.yaml
 .gitleaks.toml
-.gitmodules
 Brewfile
-dotbot/
-install
-install.conf.yaml
-setup_homebrew.fish
