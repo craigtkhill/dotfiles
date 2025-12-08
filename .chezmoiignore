@@ -4,3 +4,4 @@ LICENSE.md
 .gitleaks.toml
 Brewfile
 Flatpakfile
+Cargofile

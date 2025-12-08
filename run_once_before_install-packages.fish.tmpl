@@ -15,6 +15,13 @@ end
 echo "Installing packages from Brewfile..."
 brew bundle --file="{{ .chezmoi.sourceDir }}/Brewfile" --verbose
 
+# Install CLI tools from Cargofile
+echo "Installing CLI tools from Cargofile..."
+set -l cargofile "{{ .chezmoi.sourceDir }}/Cargofile"
+if test -f $cargofile
+    cat $cargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install
+end
+
 {{- else if eq .chezmoi.os "linux" }}
 echo "Starting setup on Linux"
 
@@ -64,6 +71,13 @@ end
 echo "Installing Rust and Cargo..."
 if not command -v cargo >/dev/null
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source $HOME/.cargo/env
+end
+
+echo "Installing CLI tools from Cargofile..."
+set -l cargofile "{{ .chezmoi.sourceDir }}/Cargofile"
+if test -f $cargofile
+    cat $cargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install
 end
 
 echo "Setup complete"
