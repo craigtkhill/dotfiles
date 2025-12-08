@@ -55,5 +55,16 @@ if test "$pkg_manager" = "apt" -o "$pkg_manager" = "dnf"
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 end
 
+echo "Installing Flatpak applications..."
+set -l flatpakfile "{{ .chezmoi.sourceDir }}/Flatpakfile"
+if test -f $flatpakfile
+    cat $flatpakfile | grep -v '^#' | grep -v '^$' | xargs -I {} flatpak install -y flathub {}
+end
+
+echo "Installing Rust and Cargo..."
+if not command -v cargo >/dev/null
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+end
+
 echo "Setup complete"
 {{- end }}

@@ -6,8 +6,8 @@ Personal development environment configuration with automated setup and security
 
 - **Fish Shell Configuration** - Modern shell with intelligent autocompletions and syntax highlighting
 - **Automated Installation** - One-command setup using chezmoi
-- **Cross-Platform** - Works on macOS, Linux, and Windows
-- **Automated Package Installation** - Homebrew and packages installed automatically
+- **Cross-Platform** - Works on macOS and Linux
+- **Automated Package Installation** - Homebrew (macOS), Flatpak (Linux), and Cargo (both)
 - **Security Scanning** - Pre-commit hooks prevent accidental leaks of secrets and personal information
 
 ## Quick Start
@@ -21,13 +21,6 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply craigtkhill
 # Or if chezmoi is already installed:
 chezmoi init --apply craigtkhill
 ```
-
-The installation will:
-1. Clone this repository
-2. Install Homebrew (if not already installed)
-3. Install all packages from the Brewfile
-4. Set up Fish shell configuration
-5. Configure Git settings
 
 ## Manual Installation
 
@@ -43,6 +36,17 @@ chezmoi diff
 # Apply the changes
 chezmoi apply
 ```
+
+## Package Management
+
+Cross-platform commands are available for managing packages:
+
+- `update` - Update package lists
+- `outdated` - Show outdated packages across all package managers
+- `upgrade` - Upgrade all packages
+- `cleanup` - Clean up old versions and unused packages
+
+These commands automatically detect which package managers are available on your system.
 
 ## Security
 
