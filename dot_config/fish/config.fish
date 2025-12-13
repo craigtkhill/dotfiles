@@ -1,4 +1,4 @@
-set -x PATH $HOME/.local/bin /opt/homebrew/bin /usr/local/bin $PATH
+fish_add_path $HOME/.local/bin
 starship init fish | source
 zoxide init fish | source
 
