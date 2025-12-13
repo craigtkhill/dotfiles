@@ -2,6 +2,8 @@ function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
     if command -v brew >/dev/null
         echo "Upgrading Homebrew packages..."
         brew upgrade
+        echo "Upgrading Homebrew casks..."
+        brew upgrade --cask
     end
 
     if command -v flatpak >/dev/null

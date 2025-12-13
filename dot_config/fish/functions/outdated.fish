@@ -2,6 +2,8 @@ function outdated -d "Show outdated packages for brew, flatpak, and cargo"
     if command -v brew >/dev/null
         echo "Homebrew outdated packages:"
         brew outdated
+        echo "Homebrew outdated casks:"
+        brew outdated --cask
     end
 
     if command -v flatpak >/dev/null
