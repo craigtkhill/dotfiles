@@ -7,26 +7,40 @@ description: Manage dotfiles using chezmoi. Use when creating, modifying, or dep
 
 This skill helps manage dotfiles using chezmoi in this repository.
 
+## Repository Location
+
+All dotfiles are managed in `~/.local/share/chezmoi` which is a git repository synced to GitHub at `https://github.com/craigtkhill/dotfiles.git`.
+
 ## Critical Workflow
 
 When creating or modifying dotfiles, you MUST follow this exact order:
 
-1. **Create files in the dotfiles repository**
+1. **Navigate to chezmoi source directory**
+   ```bash
+   cd ~/.local/share/chezmoi
+   ```
+
+2. **Create or edit files using chezmoi naming conventions**
    - Use `dot_` prefix for dotfiles (e.g., `dot_gitconfig` → `~/.gitconfig`)
    - Preserve directory structure (e.g., `dot_config/fish/functions/` → `~/.config/fish/functions/`)
+   - You can edit directly in `~/.local/share/chezmoi` or use `chezmoi edit <target-path>`
 
-2. **Copy files to home directory first**
+3. **Apply changes to home directory**
    ```bash
-   cp dot_config/fish/functions/myfile.fish ~/.config/fish/functions/
-   ```
-   This step is REQUIRED because chezmoi cannot add files that don't exist in the target location.
-
-3. **Add to chezmoi tracking**
-   ```bash
-   chezmoi add ~/.config/fish/functions/myfile.fish
+   chezmoi apply
+   # or for specific file:
+   chezmoi apply ~/.config/fish/functions/myfile.fish
    ```
 
-4. **Verify it's managed**
+4. **Commit and push to GitHub**
+   ```bash
+   cd ~/.local/share/chezmoi
+   git add .
+   git commit -m "your message"
+   git push origin main
+   ```
+
+5. **Verify it's managed**
    ```bash
    chezmoi managed | grep myfile
    ```
@@ -50,9 +64,22 @@ After adding new fish functions:
 2. Functions are immediately available (fish auto-loads them)
 3. No need to source or reload
 
+## Adding Existing Files to Chezmoi
+
+If you want to add an existing file from your home directory to chezmoi:
+
+```bash
+chezmoi add ~/.config/fish/functions/myfile.fish
+```
+
+This will copy the file to `~/.local/share/chezmoi` with proper naming and make it managed.
+
 ## Common Mistakes
 
-❌ **DON'T**: Create files only in dotfiles repo and run `chezmoi apply`
-- This won't work because chezmoi can't track files that don't exist in the target location
+❌ **DON'T**: Edit files directly in `~/.config/fish/` without updating chezmoi
+- Changes will be lost when chezmoi applies source files
 
-✅ **DO**: Create in dotfiles repo → Copy to home → Add to chezmoi → Apply
+❌ **DON'T**: Forget to commit and push changes to GitHub
+- Your dotfiles won't be backed up or available on other machines
+
+✅ **DO**: Edit in `~/.local/share/chezmoi` → Apply → Commit → Push
