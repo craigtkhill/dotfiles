@@ -15,4 +15,9 @@ function outdated -d "Show outdated packages for brew, flatpak, and cargo"
         echo "Cargo outdated packages:"
         cargo install-update -l
     end
+
+    if command -v rustup >/dev/null
+        echo "Rustup updates:"
+        rustup check
+    end
 end

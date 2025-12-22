@@ -13,4 +13,9 @@ function update -d "Update package lists for brew, flatpak, and cargo"
         echo "Checking cargo packages..."
         cargo install-update -l
     end
+
+    if command -v rustup >/dev/null
+        echo "Checking rustup updates..."
+        rustup check
+    end
 end

@@ -15,4 +15,9 @@ function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
         echo "Upgrading Cargo packages..."
         cargo install-update -a
     end
+
+    if command -v rustup >/dev/null
+        echo "Updating Rust stable toolchain..."
+        rustup update stable
+    end
 end
