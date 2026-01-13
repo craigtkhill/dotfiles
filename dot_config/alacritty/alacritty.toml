@@ -1,3 +1,8 @@
 [terminal.shell]
 program = "fish"
 args = ["--login"]
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
