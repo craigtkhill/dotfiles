@@ -1,6 +1,5 @@
 #!/usr/bin/env fish
 
-{{- if eq .chezmoi.os "darwin" }}
 echo "Starting setup on macOS"
 
 # Check if Homebrew is already installed
@@ -22,63 +21,4 @@ if test -f $cargofile
     cat $cargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install
 end
 
-{{- else if eq .chezmoi.os "linux" }}
-echo "Starting setup on Linux"
-
-# Detect package manager
-set -l pkg_manager ""
-if command -v apt >/dev/null
-    set pkg_manager "apt"
-else if command -v dnf >/dev/null
-    set pkg_manager "dnf"
-else if command -v pacman >/dev/null
-    set pkg_manager "pacman"
-else
-    echo "No supported package manager found (apt, dnf, or pacman)"
-    exit 1
-end
-
-echo "Detected package manager: $pkg_manager"
-
-echo "Installing essentials..."
-switch $pkg_manager
-    case apt
-        sudo apt update
-        sudo apt install -y curl git fish flatpak
-    case dnf
-        sudo dnf install -y curl git fish flatpak
-    case pacman
-        sudo pacman -Sy --noconfirm curl git fish flatpak
-end
-
-if test "$SHELL" != (command -v fish)
-    echo "Setting fish as default shell..."
-    command -v fish | sudo tee -a /etc/shells
-    chsh -s (command -v fish)
-end
-
-echo "Setting up Flatpak..."
-if test "$pkg_manager" = "apt" -o "$pkg_manager" = "dnf"
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-end
-
-echo "Installing Flatpak applications..."
-set -l flatpakfile "{{ .chezmoi.sourceDir }}/Flatpakfile"
-if test -f $flatpakfile
-    cat $flatpakfile | grep -v '^#' | grep -v '^$' | xargs -I {} flatpak install -y flathub {}
-end
-
-echo "Installing Rust and Cargo..."
-if not command -v cargo >/dev/null
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source $HOME/.cargo/env
-end
-
-echo "Installing CLI tools from Cargofile..."
-set -l cargofile "{{ .chezmoi.sourceDir }}/Cargofile"
-if test -f $cargofile
-    cat $cargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install
-end
-
 echo "Setup complete"
-{{- end }}

@@ -6,8 +6,8 @@ Personal development environment configuration with automated setup and security
 
 - **Fish Shell Configuration** - Modern shell with intelligent autocompletions and syntax highlighting
 - **Automated Installation** - One-command setup using chezmoi
-- **Cross-Platform** - Works on macOS and Linux
-- **Automated Package Installation** - Homebrew (macOS), Flatpak (Linux), and Cargo (both)
+- **macOS Optimized** - Designed specifically for macOS
+- **Automated Package Installation** - Homebrew and Cargo package management
 - **Security Scanning** - Pre-commit hooks prevent accidental leaks of secrets and personal information
 
 ## Quick Start
