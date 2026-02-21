@@ -1,0 +1,28 @@
+# Generated files
+.DS_Store
+.luarc.json
+.luacheckcache
+.luaenv
+.null-ls*.log
+
+# Session files
+session/
+
+# Temporary files
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Plugin directories (should be installed by Lazy)
+plugin/
+
+# Compiled Lua sources
+luac.out
+
+# Log files
+logs/
+*.log
+
+# LSP/diagnostic info
+.luarc.json
