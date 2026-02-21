@@ -1,5 +1,5 @@
 [terminal.shell]
-program = "fish"
+program = "/opt/homebrew/bin/fish"
 args = ["--login"]
 
 [[keyboard.bindings]]
