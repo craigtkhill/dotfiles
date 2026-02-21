@@ -1,5 +1,8 @@
 title = "gitleaks config for dotfiles"
 
+[extend]
+useDefault = true
+
 [[rules]]
 id = "personal-paths"
 description = "Personal filesystem paths"

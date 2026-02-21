@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.0
+    rev: v8.30.0
     hooks:
       - id: gitleaks
         args: ['--config=.gitleaks.toml']
@@ -13,5 +13,6 @@ repos:
       - id: check-added-large-files
         args: ['--maxkb=500']
       - id: check-merge-conflict
+      - id: detect-private-key
       - id: trailing-whitespace
       - id: end-of-file-fixer
