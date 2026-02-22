@@ -4,3 +4,5 @@
 	email = 64085763+craigtkhill@users.noreply.github.com
 [init]
 	defaultBranch = main
+[core]
+	excludesfile = ~/.gitignore_global
