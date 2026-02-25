@@ -1,0 +1,20 @@
+right_format = """
+$cmd_duration\
+$time\
+"""
+
+[shlvl]
+disabled = false
+format = "[$shlvl]($style) "
+threshold = 2
+
+[time]
+disabled = false
+format = '[$time]($style)'
+time_format = "%H:%M"
+style = "dimmed white"
+
+[cmd_duration]
+format = "[${duration}]($style) "
+min_time = 3000
+style = "dimmed yellow"
