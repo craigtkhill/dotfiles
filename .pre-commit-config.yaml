@@ -1,4 +1,14 @@
 repos:
+  - repo: local
+    hooks:
+      - id: chezmoi-drift
+        name: Check chezmoi drift
+        language: system
+        entry: bash -c 'output=$(chezmoi status 2>&1); if [ -n "$output" ]; then echo "Chezmoi drift detected:"; echo "$output"; exit 1; fi'
+        pass_filenames: false
+        always_run: true
+
+
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.0
     hooks:
