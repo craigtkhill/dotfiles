@@ -2,6 +2,7 @@ fish_add_path $HOME/.local/bin
 starship init fish | source
 zoxide init fish | source
 fzf --fish | source
+direnv hook fish | source
 
 # Editor
 set -x EDITOR nvim

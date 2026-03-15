@@ -1,0 +1,13 @@
+# Global direnv configuration
+
+# Layout for Python virtualenvs using uv
+layout_uv() {
+    if [[ -d ".venv" ]]; then
+        VIRTUAL_ENV="$(pwd)/.venv"
+    else
+        uv venv
+        VIRTUAL_ENV="$(pwd)/.venv"
+    fi
+    export VIRTUAL_ENV
+    PATH_add "$VIRTUAL_ENV/bin"
+}
