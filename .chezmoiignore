@@ -4,3 +4,22 @@ LICENSE.md
 .gitleaks.toml
 Brewfile
 Cargofile
+
+# SSH keys - never track private keys
+.ssh/id_*
+.ssh/known_hosts
+
+# Shell history
+.bash_history
+.zsh_history
+.local/share/fish/fish_history
+
+# Credentials and tokens
+.netrc
+.npmrc
+.pypirc
+.config/gh/hosts.yml
+.aws/credentials
+
+# Local environment overrides
+.envrc
