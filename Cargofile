@@ -4,4 +4,7 @@ zoxide
 eza
 bat
 ripgrep
+fd-find
+zellij
+dprint
 cargo-update
