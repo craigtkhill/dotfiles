@@ -74,6 +74,20 @@ chezmoi add ~/.config/fish/functions/myfile.fish
 
 This will copy the file to `~/.local/share/chezmoi` with proper naming and make it managed.
 
+## Package Manager Policy
+
+Tools are split across two files:
+
+- **Brewfile** — preferred for macOS. Use when Homebrew version is equal to or newer than Cargo.
+- **Cargofile** — use only when Cargo has a newer version than Homebrew, or when there is no Homebrew equivalent (e.g. `cargo-update`).
+
+When adding a new CLI tool:
+1. Check Homebrew version: `brew info <tool> --json | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['versions']['stable'])"`
+2. Check Cargo version: `curl -s https://crates.io/api/v1/crates/<tool> | python3 -c "import sys,json; print(json.load(sys.stdin)['crate']['newest_version'])"`
+3. If versions are equal → Brewfile
+4. If Cargo is newer → Cargofile
+5. If no Homebrew equivalent → Cargofile
+
 ## Common Mistakes
 
 ❌ **DON'T**: Edit files directly in `~/.config/fish/` without updating chezmoi

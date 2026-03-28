@@ -1,7 +1,8 @@
-# macOS-specific packages via Homebrew
-# Note: Cross-platform CLI tools (starship, zoxide, eza, bat, ripgrep) are in Cargofile
+# macOS packages via Homebrew
+# Note: Favour Homebrew over Cargo when versions are equal
 
 tap "opencode-ai/tap"
+brew "bat"
 brew "cmake"
 brew "cocoapods"
 brew "codex"
@@ -9,6 +10,9 @@ brew "coreutils"
 brew "defaultbrowser"
 brew "direnv"
 brew "docker"
+brew "dprint"
+brew "eza"
+brew "fd"
 brew "ffmpeg"
 brew "fish"
 brew "fzf"
@@ -30,8 +34,12 @@ brew "pandoc"
 brew "pipx"
 brew "pkgconf"
 brew "pyenv"
+brew "ripgrep"
+brew "starship"
 brew "yazi"
+brew "zellij"
 brew "zola"
+brew "zoxide"
 brew "opencode-ai/tap/opencode"
 cask "alacritty"
 cask "devtoys"

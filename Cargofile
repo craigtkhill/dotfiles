@@ -1,10 +1,2 @@
-# CLI tools via Cargo (cross-platform)
-starship
-zoxide
-eza
-bat
-ripgrep
-fd-find
-zellij
-dprint
+# Cargo-specific tools with no Homebrew equivalent
 cargo-update
