@@ -21,4 +21,11 @@ if test -f $cargofile
     cat $cargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install
 end
 
+# Install CLI tools from git repositories listed in GitCargofile
+echo "Installing CLI tools from GitCargofile..."
+set -l gitcargofile "{{ .chezmoi.sourceDir }}/GitCargofile"
+if test -f $gitcargofile
+    cat $gitcargofile | grep -v '^#' | grep -v '^$' | xargs -n1 cargo install --git
+end
+
 echo "Setup complete"
