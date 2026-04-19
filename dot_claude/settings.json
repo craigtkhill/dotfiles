@@ -1,0 +1,26 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "jq -r '\"model: \" + (.model // \"default\")' ~/.claude/settings.json"
+  },
+  "enabledPlugins": {
+    "stdd-agents@stdd-agents": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "caveman@caveman": false
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "medium",
+  "autoDreamEnabled": false
+}
