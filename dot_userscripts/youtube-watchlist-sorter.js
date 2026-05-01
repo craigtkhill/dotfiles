@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         YouTube WL Permanent Sorter (Shortest to Longest)
+// @name         YouTube WL Sorter
 // @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.2
 // @description  Permanently reorders WL by simulating "Move to Top" actions
 // @author       Craig Hill
-// @match        https://www.youtube.com/playlist?list=WL
+// @match        *://*.youtube.com/*
 // @grant        none
 // ==/UserScript==
 
@@ -14,6 +14,7 @@
 
     function getVideos() {
         const container = document.querySelector('ytd-playlist-video-list-renderer #contents');
+        if (!container) return [];
         return Array.from(container.querySelectorAll('ytd-playlist-video-renderer')).map(v => {
             const timeStr = v.querySelector('span.ytd-thumbnail-overlay-time-status-renderer')?.innerText || "0:00";
             const parts = timeStr.trim().split(':').map(Number);
@@ -24,11 +25,11 @@
 
     async function scrollToLoadAll() {
         const btn = document.getElementById('sort-status-btn');
-        btn.innerText = "Loading all videos...";
+        if(btn) btn.innerText = "Loading all videos...";
         let prev = 0;
         while (true) {
             window.scrollTo(0, document.documentElement.scrollHeight);
-            await delay(1500);
+            await delay(800);
             const count = document.querySelectorAll('ytd-playlist-video-renderer').length;
             if (count === prev) break;
             prev = count;
@@ -40,8 +41,6 @@
     async function startPermanentSort() {
         await scrollToLoadAll();
 
-        // Build the desired order: longest first so that after all
-        // "Move to top" calls, the shortest ends up on top.
         const sorted = getVideos().sort((a, b) => b.seconds - a.seconds);
         const titleOrder = sorted.map(v => v.title);
 
@@ -50,9 +49,8 @@
 
         for (let i = 0; i < titleOrder.length; i++) {
             const targetTitle = titleOrder[i];
-            btn.innerText = `Processing ${i + 1}/${titleOrder.length}: ${targetTitle.substring(0, 30)}...`;
+            if(btn) btn.innerText = `Processing ${i + 1}/${titleOrder.length}: ${targetTitle.substring(0, 30)}...`;
 
-            // Re-query DOM every iteration to get fresh element references
             const freshVideos = getVideos();
             const match = freshVideos.find(v => v.title === targetTitle);
             if (!match) {
@@ -60,9 +58,8 @@
                 continue;
             }
 
-            // Scroll into view and open the menu
-            match.element.scrollIntoView({ behavior: "smooth", block: "center" });
-            await delay(400);
+            match.element.scrollIntoView({ behavior: "instant", block: "center" });
+            await delay(50);
 
             const menuBtn = match.element.querySelector('button[aria-label="Action menu"]');
             if (!menuBtn) {
@@ -70,18 +67,19 @@
                 continue;
             }
             menuBtn.click();
-            await delay(700);
 
-            // Click "Move to top"
+            await delay(100);
+
             const menuOptions = Array.from(document.querySelectorAll('ytd-menu-service-item-renderer'));
             const moveTop = menuOptions.find(el => el.textContent.includes("Move to top"));
+
             if (moveTop) {
                 moveTop.click();
-                await delay(1500);
+                await delay(600);
             } else {
                 console.warn("No 'Move to top' for: " + targetTitle);
                 document.body.click();
-                await delay(400);
+                await delay(100);
             }
         }
 
@@ -89,10 +87,26 @@
         location.reload();
     }
 
-    const btn = document.createElement('button');
-    btn.id = 'sort-status-btn';
-    btn.innerText = "START SORT";
-    btn.style = "position:fixed;top:100px;right:20px;z-index:9999;padding:15px;background:#cc0000;color:white;border:none;cursor:pointer;font-weight:bold;border-radius:4px;box-shadow:0 4px 10px rgba(0,0,0,0.3);";
-    btn.onclick = startPermanentSort;
-    document.body.appendChild(btn);
+    function manageButtonVisibility() {
+        const isWatchLaterPage = window.location.href.includes('list=WL');
+        let btn = document.getElementById('sort-status-btn');
+
+        if (isWatchLaterPage) {
+            if (!btn) {
+                btn = document.createElement('button');
+                btn.id = 'sort-status-btn';
+                btn.innerText = "START SORT";
+                btn.style = "position:fixed;top:100px;right:20px;z-index:9999;padding:15px;background:#cc0000;color:white;border:none;cursor:pointer;font-weight:bold;border-radius:4px;box-shadow:0 4px 10px rgba(0,0,0,0.3);";
+                btn.onclick = startPermanentSort;
+                document.body.appendChild(btn);
+            }
+        } else {
+            if (btn) {
+                btn.remove();
+            }
+        }
+    }
+
+    manageButtonVisibility();
+    window.addEventListener('yt-navigate-finish', manageButtonVisibility);
 })();
