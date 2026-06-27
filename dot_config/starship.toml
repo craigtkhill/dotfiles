@@ -3,6 +3,9 @@ $cmd_duration\
 $time\
 """
 
+[git_metrics]
+disabled = false
+
 [shlvl]
 disabled = false
 format = "[$shlvl]($style) "
