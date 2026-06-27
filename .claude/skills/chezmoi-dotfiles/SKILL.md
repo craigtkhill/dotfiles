@@ -15,24 +15,32 @@ All dotfiles are managed in `~/.local/share/chezmoi` which is a git repository s
 
 When creating or modifying dotfiles, you MUST follow this exact order:
 
-1. **Navigate to chezmoi source directory**
+1. **Sync drift first — before any other work**
+   ```bash
+   chezmoi re-add $(chezmoi status | awk '{print $2}' | xargs -I{} chezmoi source-path ~/{})
+   # or manually re-add each drifted file shown by:
+   chezmoi status
+   ```
+   The pre-commit hook blocks commits when home directory files differ from the chezmoi source. Always resolve drift before editing or committing.
+
+2. **Navigate to chezmoi source directory**
    ```bash
    cd ~/.local/share/chezmoi
    ```
 
-2. **Create or edit files using chezmoi naming conventions**
+3. **Create or edit files using chezmoi naming conventions**
    - Use `dot_` prefix for dotfiles (e.g., `dot_gitconfig` → `~/.gitconfig`)
    - Preserve directory structure (e.g., `dot_config/fish/functions/` → `~/.config/fish/functions/`)
    - You can edit directly in `~/.local/share/chezmoi` or use `chezmoi edit <target-path>`
 
-3. **Apply changes to home directory**
+4. **Apply changes to home directory**
    ```bash
    chezmoi apply
    # or for specific file:
    chezmoi apply ~/.config/fish/functions/myfile.fish
    ```
 
-4. **Commit and push to GitHub**
+5. **Commit and push to GitHub**
    ```bash
    cd ~/.local/share/chezmoi
    git add .
@@ -40,7 +48,7 @@ When creating or modifying dotfiles, you MUST follow this exact order:
    git push origin main
    ```
 
-5. **Verify it's managed**
+6. **Verify it's managed**
    ```bash
    chezmoi managed | grep myfile
    ```
