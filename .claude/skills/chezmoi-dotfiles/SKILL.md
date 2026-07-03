@@ -15,13 +15,21 @@ All dotfiles are managed in `~/.local/share/chezmoi` which is a git repository s
 
 When creating or modifying dotfiles, you MUST follow this exact order:
 
-1. **Sync drift first — before any other work**
+1. **Sync drift first — before any other work, no exceptions**
+
+   Run this as your very first tool call in ANY session that touches this repo, even if the user's request seems unrelated to the drifted files. Do not wait to be asked.
+
    ```bash
-   chezmoi re-add $(chezmoi status | awk '{print $2}' | xargs -I{} chezmoi source-path ~/{})
-   # or manually re-add each drifted file shown by:
    chezmoi status
    ```
-   The pre-commit hook blocks commits when home directory files differ from the chezmoi source. Always resolve drift before editing or committing.
+
+   If it shows any output, re-add each drifted file (paths from `chezmoi status` are home-relative):
+
+   ```bash
+   chezmoi status | awk '{print $2}' | while read -r f; do chezmoi re-add ~/"$f"; done
+   ```
+
+   The pre-commit hook blocks commits when home directory files differ from the chezmoi source. Always resolve drift before editing or committing — regardless of whether the drift is related to the current task.
 
 2. **Navigate to chezmoi source directory**
    ```bash
