@@ -15,21 +15,21 @@ All dotfiles are managed in `~/.local/share/chezmoi` which is a git repository s
 
 When creating or modifying dotfiles, you MUST follow this exact order:
 
-1. **Sync drift first — before any other work, no exceptions**
+1. **Check for drift before every new task — no exceptions**
 
-   Run this as your very first tool call in ANY session that touches this repo, even if the user's request seems unrelated to the drifted files. Do not wait to be asked.
+   Run this before starting *any* new task in this repo, not just once per session — other processes (e.g. Obsidian) edit tracked files live and can create drift mid-session:
 
    ```bash
    chezmoi status
    ```
 
-   If it shows any output, re-add each drifted file (paths from `chezmoi status` are home-relative):
+   Empty output → proceed. Any output → re-add every drifted file immediately (paths from `chezmoi status` are home-relative), regardless of whether it's related to the current task:
 
    ```bash
    chezmoi status | awk '{print $2}' | while read -r f; do chezmoi re-add ~/"$f"; done
    ```
 
-   The pre-commit hook blocks commits when home directory files differ from the chezmoi source. Always resolve drift before editing or committing — regardless of whether the drift is related to the current task.
+   The pre-commit hook blocks commits when home directory files differ from the chezmoi source. Never wait to be asked or reminded.
 
 2. **Navigate to chezmoi source directory**
    ```bash
@@ -111,5 +111,11 @@ When adding a new CLI tool:
 
 ❌ **DON'T**: Forget to commit and push changes to GitHub
 - Your dotfiles won't be backed up or available on other machines
+
+❌ **DON'T**: Retry `git commit` immediately after a hook failure without re-running `chezmoi apply`
+- Hooks like `end-of-file-fixer` rewrite files in the working tree on failure, silently re-creating drift against home. Always `chezmoi apply && chezmoi status` (must be empty) before retrying.
+
+❌ **DON'T**: Trust what's staged after a failed commit attempt
+- A prior `git add -A` can leave unrelated files staged, bundling them into your next, supposedly-separate commit. Run `git diff --cached --stat` and confirm only intended paths before committing.
 
 ✅ **DO**: Edit in `~/.local/share/chezmoi` → Apply → Commit → Push

@@ -2,30 +2,34 @@
 
 Guidelines for AI agents working in this dotfiles repository.
 
-## Before Any Work: Sync Chezmoi Drift
+## Check for Drift Before Every New Task
 
-Run `chezmoi status` as your first tool call in every session that touches this repo — before reading files, before editing, before anything else. Do this unconditionally, even if the user's request has nothing to do with the files that show drift. Do not wait for the user to ask or remind you.
+Run this one command before starting *any* new piece of work in this repo — not just at session start, but before each new task within a session too (other processes, like Obsidian, edit tracked files live and can create drift mid-session):
 
 ```bash
 chezmoi status
 ```
 
-If any files show drift, re-add them all (paths from `chezmoi status` are home-relative):
+Empty output → proceed. Any output → resolve it immediately, unconditionally, even if unrelated to the task at hand:
 
 ```bash
 chezmoi status | awk '{print $2}' | while read -r f; do chezmoi re-add ~/"$f"; done
 ```
 
-The pre-commit hook (`chezmoi-drift`) blocks all commits when the home directory files differ from the chezmoi source. Resolving drift first — always, not just when it's related to the current task — avoids commit failures mid-task.
+Never wait to be asked or reminded. See `.claude/skills/chezmoi-dotfiles/SKILL.md` for the full workflow.
 
-After re-adding drifted files, also apply any hook fixes back to the home directory before committing:
+## If a Commit Attempt Fails on a Hook
+
+`end-of-file-fixer`, `trailing-whitespace`, and similar hooks rewrite files in the working tree as a side effect of a failed commit attempt. That rewrite is NOT yet applied to the home directory, so it silently re-creates chezmoi drift even though you just resolved it. After ANY failed commit attempt, before retrying:
 
 ```bash
-chezmoi apply <target-path>
+chezmoi apply && chezmoi status   # must print nothing before you retry the commit
 ```
 
-See `.claude/skills/chezmoi-dotfiles/SKILL.md` for the full workflow.
+Do not just re-stage and retry `git commit` — re-run `chezmoi apply` first, every time, no exceptions.
 
 ## Commit Each Piece Separately
 
 Do not batch unrelated changes into one commit. Commit as soon as a logical piece of work is done — e.g. drift re-adds, a skill/doc fix, and a new feature (like a layout file) are three separate commits, even within the same session. Never hold commits until the end of a session and squash them together.
+
+Before staging a commit for one piece of work, run `git status --short` and `git diff --cached --stat` and confirm only the intended paths are staged — a prior failed commit attempt (e.g. `git add -A`) can leave unrelated files staged, silently bundling them into the next commit.
