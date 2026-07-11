@@ -1,5 +1,6 @@
 README.md
 AGENTS.md
+CLAUDE.md
 LICENSE.md
 .pre-commit-config.yaml
 .gitleaks.toml
