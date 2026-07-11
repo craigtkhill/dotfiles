@@ -33,3 +33,7 @@ Do not just re-stage and retry `git commit` — re-run `chezmoi apply` first, ev
 Do not batch unrelated changes into one commit. Commit as soon as a logical piece of work is done — e.g. drift re-adds, a skill/doc fix, and a new feature (like a layout file) are three separate commits, even within the same session. Never hold commits until the end of a session and squash them together.
 
 Before staging a commit for one piece of work, run `git status --short` and `git diff --cached --stat` and confirm only the intended paths are staged — a prior failed commit attempt (e.g. `git add -A`) can leave unrelated files staged, silently bundling them into the next commit.
+
+## Verify Staged Content Matches the Commit Message Immediately Before Committing
+
+Run `git diff --cached --stat` right before the `git commit` command itself — not just earlier when staging. A hook (e.g. `end-of-file-fixer`) or a `chezmoi apply` between staging and committing can change what's actually staged, so the message you wrote earlier may no longer describe what you're about to commit. If the staged paths don't match the message's description, stop: reconcile by re-staging, splitting into separate commits, or rewriting the message — never commit a message that doesn't match its diff just because a command was already typed.

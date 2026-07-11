@@ -118,4 +118,7 @@ When adding a new CLI tool:
 ❌ **DON'T**: Trust what's staged after a failed commit attempt
 - A prior `git add -A` can leave unrelated files staged, bundling them into your next, supposedly-separate commit. Run `git diff --cached --stat` and confirm only intended paths before committing.
 
+❌ **DON'T**: Write the commit message before your final check of what's staged
+- A hook or `chezmoi apply` running between staging and committing can change the staged diff, making an earlier-drafted message stale. Run `git diff --cached --stat` immediately before `git commit` and confirm it still matches the message — if not, stop and reconcile before committing.
+
 ✅ **DO**: Edit in `~/.local/share/chezmoi` → Apply → Commit → Push
