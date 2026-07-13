@@ -6,7 +6,7 @@ light = "catppuccin-mocha"
 ratio = [1, 2, 4]
 sort_by = "natural"
 sort_dir_first = true
-show_hidden = false
+show_hidden = true
 
 [preview]
 tab_size = 2
