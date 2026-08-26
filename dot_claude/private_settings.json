@@ -3,12 +3,38 @@
     "commit": "",
     "pr": ""
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.claude/hooks/simplified-technical-english.sh\""
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "jq -r '\"model: \" + (.model // \"default\")' ~/.claude/settings.json"
   },
   "enabledPlugins": {
-    "stdd-agents@stdd-agents": true,
+    "stdd-agents@stdd-agents": false,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "caveman@caveman": false,
     "ponytail@ponytail": true
@@ -32,5 +58,6 @@
   "tui": "fullscreen",
   "autoDreamEnabled": false,
   "editorMode": "vim",
-  "autoCompactEnabled": true
+  "autoCompactEnabled": true,
+  "model": "sonnet"
 }
