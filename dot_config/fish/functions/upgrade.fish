@@ -1,5 +1,6 @@
 function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
     if command -v brew >/dev/null
+        sudo -v
         echo "Upgrading Homebrew packages..."
         brew upgrade
         echo "Upgrading Homebrew casks..."
