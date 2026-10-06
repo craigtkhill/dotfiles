@@ -32,7 +32,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "jq -r '\"model: \" + (.model // \"default\")' ~/.claude/settings.json"
+    "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {
     "stdd-agents@stdd-agents": false,
