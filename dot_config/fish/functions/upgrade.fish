@@ -1,11 +1,7 @@
 function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
     if command -v brew >/dev/null
         sudo -v
-        while true
-            sudo -n true
-            sleep 60
-            kill -0 $fish_pid 2>/dev/null || exit
-        end &
+        sh -c 'while kill -0 $PPID 2>/dev/null; do sudo -n true; sleep 50; done' </dev/null >/dev/null 2>&1 &
         set -l sudo_keepalive_pid $last_pid
 
         echo "Upgrading Homebrew packages..."
