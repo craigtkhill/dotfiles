@@ -13,10 +13,12 @@ function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
                 echo "Upgrading $p[3] $cur -> $tag (GitHub release)..."
                 set -l tmp (mktemp -d)
                 gh release download -R $p[1] -p $p[2] -D $tmp; or continue
-                set -l mnt (hdiutil attach -nobrowse -readonly $tmp/*.dmg | string match -r '/Volumes/.*')[-1]
+                set -l mnt $tmp/mnt
+                mkdir $mnt
+                diskutil image attach --readOnly --nobrowse --mountPoint $mnt $tmp/*.dmg >/dev/null; or continue
                 rm -rf /Applications/$p[3].app
                 cp -R "$mnt/$p[3].app" /Applications/
-                hdiutil detach -quiet "$mnt"
+                diskutil eject $mnt >/dev/null
                 xattr -dr com.apple.quarantine /Applications/$p[3].app
                 rm -rf $tmp
             end
