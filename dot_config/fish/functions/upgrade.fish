@@ -5,7 +5,7 @@ function upgrade -d "Upgrade all packages for brew, flatpak, and cargo"
         echo "Upgrading Homebrew casks..."
         env NONINTERACTIVE=1 brew upgrade --cask
         if command -v gh >/dev/null
-            for spec in alacritty/alacritty:Alacritty-*.dmg:Alacritty marktext/marktext:marktext-mac-arm64-*.dmg:MarkText
+            for spec in "alacritty/alacritty:Alacritty-*.dmg:Alacritty" "marktext/marktext:marktext-mac-arm64-*.dmg:MarkText"
                 set -l p (string split : $spec)
                 set -l tag (gh release view -R $p[1] --json tagName -q .tagName | string replace -r '^v' '')
                 set -l cur (defaults read /Applications/$p[3].app/Contents/Info CFBundleShortVersionString 2>/dev/null)
